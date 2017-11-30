@@ -5,4 +5,10 @@
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
+
+    <style name="ExpandedAppbar" parent="@android:style/TextAppearance.Material.Title">
+        <item name="textColor">@color/colorPrimary</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
 </resources>
