@@ -14,6 +14,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import id.eightstudio.www.orderfoods.Model.User;
+
 public class Signup extends AppCompatActivity {
 
     EditText edtPhone, edtName, edtPassword;
@@ -44,23 +46,19 @@ public class Signup extends AppCompatActivity {
                 progressDialog.setMessage("Tunggu Sebentar");
                 progressDialog.show();
 
-                final String phone, name, password;
-                phone = edtPhone.getText().toString();
-                name = edtName.getText().toString();
-                password = edtPassword.getText().toString();
 
                 table_user.addValueEventListener(new ValueEventListener() {
 
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        if (dataSnapshot.child(phone).exists()) {
+                        if (dataSnapshot.child(edtPassword.getText().toString()).exists()) {
                             progressDialog.dismiss();
                             Toast.makeText(Signup.this, "Phone sudah terdaftar", Toast.LENGTH_SHORT).show();
                         } else {
                             progressDialog.dismiss();
-                            User user = new User(name, password);
-                            table_user.child(phone).setValue(user);
+                            User user = new User(edtName.getText().toString(), edtPassword.getText().toString());
+                            table_user.child(edtPhone.getText().toString()).setValue(user);
                             Toast.makeText(Signup.this, "Berhasil Registrasi", Toast.LENGTH_SHORT).show();
                         }
                     }

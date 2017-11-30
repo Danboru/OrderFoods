@@ -1,12 +1,12 @@
 package id.eightstudio.www.orderfoods;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -14,6 +14,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import id.eightstudio.www.orderfoods.Common.Common;
+import id.eightstudio.www.orderfoods.Model.User;
 
 public class Signin extends AppCompatActivity {
 
@@ -42,19 +45,20 @@ public class Signin extends AppCompatActivity {
                 progressBar.setMessage("Tunggu Sebentar");
                 progressBar.show();
 
-                final String phone, pass;
-                phone = edtPhone.getText().toString();
-                pass = edtPassword.getText().toString();
-
                 table_user.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        if (dataSnapshot.child(phone).exists()) {
+                        if (dataSnapshot.child(edtPhone.getText().toString()).exists()) {
                             progressBar.dismiss();
-                            User user = dataSnapshot.child(phone).getValue(User.class);
-                            if (user.getPassword().equals(pass)) {
-                                Toast.makeText(Signin.this, "Berhasil", Toast.LENGTH_SHORT).show();
+                            User user = dataSnapshot.child(edtPhone.getText().toString()).getValue(User.class);
+                            if (user.getPassword().equals(edtPassword.getText().toString())) {
+
+                                Intent intent = new Intent(Signin.this, Home.class);
+                                Common.currentUser = user;
+                                startActivity(intent);
+                                finish();
+
                             } else {
                                 Toast.makeText(Signin.this, "Gagal", Toast.LENGTH_SHORT).show();
                             }
@@ -66,7 +70,7 @@ public class Signin extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        Toast.makeText(Signin.this, "Server Bermasalah", Toast.LENGTH_SHORT).show();
                     }
                 });
 

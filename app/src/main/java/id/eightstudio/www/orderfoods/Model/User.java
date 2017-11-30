@@ -1,4 +1,4 @@
-package id.eightstudio.www.orderfoods;
+package id.eightstudio.www.orderfoods.Model;
 
 /**
  * Created by danbo on 30/11/17.
