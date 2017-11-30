@@ -11,7 +11,6 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     Button btnSignIn, btnSignUp;
-
     TextView txtSlogan;
 
     @Override

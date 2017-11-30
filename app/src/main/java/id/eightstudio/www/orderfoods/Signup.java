@@ -57,7 +57,7 @@ public class Signup extends AppCompatActivity {
                             Toast.makeText(Signup.this, "Phone sudah terdaftar", Toast.LENGTH_SHORT).show();
                         } else {
                             progressDialog.dismiss();
-                            User user = new User(edtName.getText().toString(), edtPassword.getText().toString());
+                            User user = new User(edtName.getText().toString(), edtPassword.getText().toString(), "false");
                             table_user.child(edtPhone.getText().toString()).setValue(user);
                             Toast.makeText(Signup.this, "Berhasil Registrasi", Toast.LENGTH_SHORT).show();
                         }
