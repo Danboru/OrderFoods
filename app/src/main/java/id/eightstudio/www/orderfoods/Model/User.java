@@ -6,7 +6,7 @@ package id.eightstudio.www.orderfoods.Model;
 
 public class User {
 
-    private String Name, Password;
+    private String Name, Password, Phone;
 
     public User() {
     }
@@ -30,5 +30,13 @@ public class User {
 
     public void setPassword(String password) {
         Password = password;
+    }
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String phone) {
+        Phone = phone;
     }
 }

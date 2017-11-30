@@ -51,7 +51,9 @@ public class Signin extends AppCompatActivity {
 
                         if (dataSnapshot.child(edtPhone.getText().toString()).exists()) {
                             progressBar.dismiss();
+
                             User user = dataSnapshot.child(edtPhone.getText().toString()).getValue(User.class);
+                            user.setPhone(edtPhone.getText().toString()); //Set phone
                             if (user.getPassword().equals(edtPassword.getText().toString())) {
 
                                 Intent intent = new Intent(Signin.this, Home.class);
