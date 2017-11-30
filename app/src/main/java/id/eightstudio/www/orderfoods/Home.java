@@ -113,7 +113,7 @@ public class Home extends AppCompatActivity
                     public void onClick(View view, int position, boolean isLonggerPress) {
 
                         Intent intent = new Intent(Home.this, FoodList.class);
-                        intent.putExtra("CategoryFood", adapter.getRef(position).getKey());//Send food id
+                        intent.putExtra("CategoryId", adapter.getRef(position).getKey());//Send food id
                         startActivity(intent);
                     }
                 });

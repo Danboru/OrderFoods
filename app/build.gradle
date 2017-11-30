@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "id.eightstudio.www.orderfoods"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -38,6 +38,6 @@ dependencies {
     compile 'com.cepheuen.elegant-number-button:lib:1.0.2'
     compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
-
+    compile 'com.github.mancj:MaterialSearchBar:0.7.5'
 }
 apply plugin: 'com.google.gms.google-services'
