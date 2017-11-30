@@ -8,17 +8,48 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:730478893277:android:b00baa2d459a8506",
+        "mobilesdk_app_id": "1:730478893277:android:ecb072c2193d09d2",
         "android_client_info": {
-          "package_name": "id.eightstudio.www.latihanfirebase"
+          "package_name": "id.eightstudio.www.orderfoods"
         }
       },
       "oauth_client": [
         {
-          "client_id": "730478893277-srjsaj390lj9gtp1s3diktmqg8nj5qm7.apps.googleusercontent.com",
+          "client_id": "730478893277-abt2rekruslut7t7go79ia1uj9o25op9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPABcs1iBzsMXDL0SvRsK2IiXfR_nsjMM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:730478893277:android:f1567822c2f286e9",
+        "android_client_info": {
+          "package_name": "id.eightstudio.www.eatitserver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "730478893277-ken7ljjh7eglrh5p0lfimtemi86o3b6a.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "id.eightstudio.www.latihanfirebase",
+            "package_name": "id.eightstudio.www.eatitserver",
             "certificate_hash": "838a6d93ed27228c2af325c319204eb39436c490"
           }
         },
@@ -44,37 +75,6 @@
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:730478893277:android:ecb072c2193d09d2",
-        "android_client_info": {
-          "package_name": "id.eightstudio.www.orderfoods"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "730478893277-abt2rekruslut7t7go79ia1uj9o25op9.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAPABcs1iBzsMXDL0SvRsK2IiXfR_nsjMM"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
