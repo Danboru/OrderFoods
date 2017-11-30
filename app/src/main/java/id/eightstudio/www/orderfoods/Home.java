@@ -165,13 +165,23 @@ public class Home extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_menu) {
-            Toast.makeText(this, "Menu", Toast.LENGTH_SHORT).show();
+
         } else if (id == R.id.nav_cart) {
-            Toast.makeText(this, "Cart", Toast.LENGTH_SHORT).show();
+
+            Intent cart = new Intent(Home.this, Cart.class);
+            startActivity(cart);
+
         } else if (id == R.id.nav_orders) {
-            Toast.makeText(this, "Order", Toast.LENGTH_SHORT).show();
+
+            Intent order = new Intent(Home.this, OrderStatus.class);
+            startActivity(order);
+
         } else if (id == R.id.nav_log_out) {
-            Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+
+            Intent signin = new Intent(Home.this, Signin.class);
+            signin.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(signin);
+
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
