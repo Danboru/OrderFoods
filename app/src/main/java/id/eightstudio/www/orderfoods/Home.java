@@ -66,14 +66,14 @@ public class Home extends AppCompatActivity
         });
 
         //Drawer Layout
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         //NavigationView
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         //Set FullName
@@ -113,10 +113,8 @@ public class Home extends AppCompatActivity
                         Intent intent = new Intent(Home.this, FoodList.class);
                         intent.putExtra("CategoryFood", adapter.getRef(position).getKey());//Send food id
                         startActivity(intent);
-
                     }
                 });
-
             }
         };
 
@@ -165,16 +163,16 @@ public class Home extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_menu) {
-
+            Toast.makeText(this, "Menu", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_cart) {
-
+            Toast.makeText(this, "Cart", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_orders) {
-
+            Toast.makeText(this, "Order", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_log_out) {
-
+            Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

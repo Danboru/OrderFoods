@@ -75,7 +75,6 @@ public class FoodDetail extends AppCompatActivity {
                 food_price.setText(food.getPrice());
                 food_name.setText(food.getName());
                 food_description.setText(food.getDescrption());
-
             }
 
             @Override
