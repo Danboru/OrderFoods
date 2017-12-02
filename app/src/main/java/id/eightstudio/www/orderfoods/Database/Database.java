@@ -12,22 +12,18 @@ import java.util.List;
 
 import id.eightstudio.www.orderfoods.Model.Order;
 
-/**
- * Created by danbo on 30/11/17.
- */
-
 public class Database extends SQLiteAssetHelper {
 
     private static final String DB_NAME = "EatitDB.db";
     private static final int DB_VER = 1;
 
     private static final String TABLE_ORDER = "OrderDetail";
+
     private static final String KEY_ID = "ProductId";
     private static final String KEY_NAME = "ProductName";
     private static final String KEY_QUANTITY = "Quantity";
     private static final String KEY_PRICE = "Price";
     private static final String KEY_DISCOUNT = "Discount";
-
 
     public Database(Context context) {
         super(context, DB_NAME, null, DB_VER);

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackgroundMain"
     tools:context="id.eightstudio.www.orderfoods.Cart">
 
     <android.support.v7.widget.RecyclerView
@@ -20,14 +21,16 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            >
 
             <LinearLayout
-                android:layout_margin="8dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -41,7 +44,7 @@
                     android:id="@+id/total"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="$ 1,0000"
+                    android:text="$ 0"
                     android:textColor="@android:color/white"
                     android:textSize="24sp"
                     />

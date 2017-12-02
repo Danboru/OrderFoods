@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -27,6 +29,12 @@ public class Signup extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Set screen agar tidak memiliki toobar dan title
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //Set aplikasi ke dalam keadaan fullscreen
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_signup);
 
         edtPhone = findViewById(R.id.edtPhone);
@@ -57,7 +65,7 @@ public class Signup extends AppCompatActivity {
                             Toast.makeText(Signup.this, "Phone sudah terdaftar", Toast.LENGTH_SHORT).show();
                         } else {
                             progressDialog.dismiss();
-                            User user = new User(edtName.getText().toString(), edtPassword.getText().toString(), "false");
+                            User user = new User(edtName.getText().toString(), edtPassword.getText().toString());
                             table_user.child(edtPhone.getText().toString()).setValue(user);
                             Toast.makeText(Signup.this, "Berhasil Registrasi", Toast.LENGTH_SHORT).show();
                         }

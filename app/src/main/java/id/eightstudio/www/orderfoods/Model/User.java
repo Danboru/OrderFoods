@@ -11,10 +11,10 @@ public class User {
     public User() {
     }
 
-    public User(String name, String password, String isstaff) {
+    public User(String name, String password) {
         Name = name;
         Password = password;
-        IsStaff = isstaff;
+        IsStaff = "false";
     }
 
     public String getName() {
