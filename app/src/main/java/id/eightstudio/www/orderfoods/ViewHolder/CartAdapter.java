@@ -38,7 +38,6 @@ class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
         txt_price = itemView.findViewById(R.id.cart_item_price);
         img_cart_count = itemView.findViewById(R.id.cart_item_count);
 
-
     }
 
     @Override

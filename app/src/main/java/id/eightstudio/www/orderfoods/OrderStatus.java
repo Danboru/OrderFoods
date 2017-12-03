@@ -49,6 +49,7 @@ public class OrderStatus extends AppCompatActivity {
 
     }
 
+    //Load order berdasarkan phone
     private void loadOrders(String phone) {
 
         adapter = new FirebaseRecyclerAdapter<Request, OrderViewHolder>(
@@ -80,11 +81,11 @@ public class OrderStatus extends AppCompatActivity {
     private String convertCodeStatus(String status) {
 
         if (status.equals("0"))
-            return "Placed";
+            return "Di Terima";
         else if (status.equals("1"))
-            return "On My Way";
+            return "Pengiriman";
         else
-            return "Shipped";
+            return "Dalam Proses";
 
     }
 }

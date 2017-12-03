@@ -39,4 +39,22 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="20dp"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Belum Punya Akun ?"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:onClick="belumPunyaAkun"
+            />
+
+    </LinearLayout>
+
 </RelativeLayout>

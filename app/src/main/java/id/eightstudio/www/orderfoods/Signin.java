@@ -88,4 +88,10 @@ public class Signin extends AppCompatActivity {
         });
 
     }
+
+    //Menuju ke activity signup
+    public void belumPunyaAkun(View view) {
+        Intent intent = new Intent(Signin.this, Signup.class);
+        startActivity(intent);
+    }
 }

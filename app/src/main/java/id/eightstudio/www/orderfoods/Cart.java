@@ -1,11 +1,15 @@
 package id.eightstudio.www.orderfoods;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -70,7 +74,7 @@ public class Cart extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                showAlertDialog();
+                showAlertDialog(Cart.this);
             }
         });
         
@@ -78,50 +82,62 @@ public class Cart extends AppCompatActivity {
 
     }
 
-    private void showAlertDialog() {
+    private void showAlertDialog(final Context context) {
 
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(Cart.this);
-        alertDialog.setTitle("One More Step");
-        alertDialog.setMessage("Enter yout adress");
+        final Dialog dialog = new Dialog(context);
 
-        final EditText edtAdress = new EditText(Cart.this);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        );
+        //Set layout
+        dialog.setContentView(R.layout.place_order);
 
-        edtAdress.setLayoutParams(layoutParams);
-        alertDialog.setView(edtAdress);
-        alertDialog.setIcon(R.drawable.ic_shopping_cart_black_24dp);
+        //Membuat agar dialog tidak hilang saat di click di area luar dialog
+        dialog.setCanceledOnTouchOutside(true);
 
-        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        //Membuat dialog agar berukuran responsive
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        int width = metrics.widthPixels;
+        dialog.getWindow().setLayout((6 * width) / 7, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        //Init View
+        final Button btnNo = dialog.findViewById(R.id.btnNo);
+        final Button btnYes = dialog.findViewById(R.id.btnYes);
+        final EditText inputAdress = dialog.findViewById(R.id.txtAdress);
+
+        btnNo.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                Request request = new Request(
-                        Common.currentUser.getPhone(),
-                        Common.currentUser.getName(),
-                        edtAdress.getText().toString(),
-                        txtTotalPrice.getText().toString(),
-                        cart
-                );
-
-                requests.child(requests.push().getKey()).setValue(request);
-                new Database(getBaseContext()).cleanCart();
-                Toast.makeText(Cart.this, "Terimakasih", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        });
-
-        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
+                Toast.makeText(context, "Order Di Batalkan", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
 
-        alertDialog.show();
+        btnYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                //Cek alamat kosong ?
+                if (TextUtils.isEmpty(inputAdress.getText().toString())) {
+                    Toast.makeText(context, "Isikan Alamat", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    Request request = new Request(
+                            Common.currentUser.getPhone(),
+                            Common.currentUser.getName(),
+                            inputAdress.getText().toString(),
+                            txtTotalPrice.getText().toString(),
+                            cart
+                    );
+
+                    requests.child(requests.push().getKey()).setValue(request);
+                    new Database(getBaseContext()).cleanCart();
+                    Toast.makeText(Cart.this, "Terimakasih", Toast.LENGTH_SHORT).show();
+                    finish();
+                    
+                }
+
+            }
+        });
+
+        dialog.show();
     }
 
     private void loadListFood() {
@@ -130,18 +146,17 @@ public class Cart extends AppCompatActivity {
         cartAdapter = new CartAdapter(cart, this);
         recyclerView.setAdapter(cartAdapter);
 
-
         //Calculate total
         int total = 0;
-        for (Order order : cart ) {
-
-            total += (Integer.parseInt(order.getPrice())) + (Integer.parseInt(order.getQuantity()));
-            Locale locale = new Locale("en", "US");
-            NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
-
-            txtTotalPrice.setText(numberFormat.format(total));
-
+        for ( Order order : cart ) {
+            total += (Integer.parseInt(order.getPrice())) * (Integer.parseInt(order.getQuantity()));
         }
+
+        Locale locale = new Locale("en", "US");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+
+        txtTotalPrice.setText(numberFormat.format(total));
+        //txtTotalPrice.setText("$ "  + String.valueOf(total) );
 
     }
 }

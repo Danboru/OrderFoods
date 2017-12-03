@@ -1,6 +1,7 @@
 package id.eightstudio.www.orderfoods;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -81,5 +82,11 @@ public class Signup extends AppCompatActivity {
             }
         });
 
+    }
+
+    //Menuju ke signin
+    public void sudahPunyaAkun(View view) {
+        Intent intent = new Intent(Signup.this, Signin.class);
+        startActivity(intent);
     }
 }
