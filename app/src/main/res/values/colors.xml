@@ -17,4 +17,9 @@
     <color name="colorControlActivated">@color/colorAccent</color>
     <color name="colorControlHighlight">@color/divider</color>
 
+    <color name="colorMenunggu">#ff0000</color>
+    <color name="colorDiProses">#2dc6e1</color>
+    <color name="colorPengiriman">#ff7b00</color>
+    <color name="colorDiTerima">#65da21</color>
+
 </resources>

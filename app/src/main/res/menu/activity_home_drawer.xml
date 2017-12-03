@@ -8,22 +8,22 @@
         <item
             android:id="@+id/nav_menu"
             android:icon="@drawable/ic_restaurant_black_24dp"
-            android:title="Menu" />
+            android:title="List Menu" />
 
         <item
             android:id="@+id/nav_cart"
             android:icon="@drawable/ic_shopping_cart_black_24dp"
-            android:title="Cart" />
+            android:title="Keranjang Belanja" />
 
         <item
             android:id="@+id/nav_orders"
             android:icon="@drawable/ic_access_time_black_24dp"
-            android:title="Order" />
+            android:title="Pesanan Anda" />
 
         <item
             android:id="@+id/nav_log_out"
             android:icon="@drawable/ic_close_black_24dp"
-            android:title="Logout" />
+            android:title="Keluar" />
 
     </group>
 

@@ -86,12 +86,12 @@
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="15dp"
+                        android:padding="25dp"
                         >
 
                         <TextView
                             android:id="@+id/food_name"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="5dp"
                             android:padding="2dp"
                             android:text="Food Name"
                             android:textSize="20sp"

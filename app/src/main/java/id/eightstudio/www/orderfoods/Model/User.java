@@ -6,9 +6,15 @@ package id.eightstudio.www.orderfoods.Model;
 
 public class User {
 
-    private String Name, Password,IsStaff, Phone;
+    private String Name, Password, IsStaff, Phone;
 
     public User() {
+    }
+
+    public User(String phone, String password, String isStaff) {
+        Password = password;
+        IsStaff = isStaff;
+        Phone = phone;
     }
 
     public User(String name, String password) {

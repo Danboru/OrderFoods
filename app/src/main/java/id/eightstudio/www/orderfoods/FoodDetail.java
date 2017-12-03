@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,9 +18,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import id.eightstudio.www.orderfoods.Database.Database;
+import java.util.ArrayList;
+import java.util.List;
+
+import id.eightstudio.www.orderfoods.Database.OpenHelper;
 import id.eightstudio.www.orderfoods.Model.Food;
 import id.eightstudio.www.orderfoods.Model.Order;
+import in.goodiebag.carouselpicker.CarouselPicker;
 
 public class FoodDetail extends AppCompatActivity {
     private static final String TAG = "FoodDetail";
@@ -36,6 +39,8 @@ public class FoodDetail extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference foods;
+    OpenHelper openHelper;
+
     private Food currentFood;
 
     @Override
@@ -43,13 +48,13 @@ public class FoodDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //Set aplikasi ke dalam keadaan fullscreen
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_food_detail);
 
         //Firebase
         database = FirebaseDatabase.getInstance();
         foods = database.getReference("Foods");
+        openHelper = new OpenHelper(FoodDetail.this);
 
         //Init View
         numberButton = findViewById(R.id.number_button);
@@ -59,14 +64,29 @@ public class FoodDetail extends AppCompatActivity {
         btnCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Database(getBaseContext()).addToCart(new Order(
+
+                /*new Database(getBaseContext()).addToCart(new Order(
                         foodId,
                         currentFood.getName(),
                         numberButton.getNumber(),
                         currentFood.getPrice(),
                         currentFood.getDiscount()
-                ));
-                Toast.makeText(FoodDetail.this, "Added to Cart", Toast.LENGTH_SHORT).show();
+                ));*/
+
+                //TODO : Periksa item sudah di keranjang ?
+                if (openHelper.hasObject(currentFood.getName()) == true) {
+                    Toast.makeText(FoodDetail.this, "Sudah di keranjang", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    openHelper.addOrder(new Order(foodId,
+                            currentFood.getName(),
+                            numberButton.getNumber(),
+                            currentFood.getPrice(),
+                            currentFood.getDiscount()));
+
+                    Toast.makeText(FoodDetail.this, "Added to Cart", Toast.LENGTH_SHORT).show();
+                }
+                
             }
         });
 

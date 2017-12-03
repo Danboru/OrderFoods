@@ -15,6 +15,10 @@ public class Order {
     public Order() {
     }
 
+    public Order(String quantity) {
+        Quantity = quantity;
+    }
+
     public Order(String productId, String productName, String quantity, String price, String discount) {
         ProductId = productId;
         ProductName = productName;

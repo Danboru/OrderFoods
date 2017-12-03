@@ -2,8 +2,8 @@ package id.eightstudio.www.orderfoods;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
+import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Locale;
 
 import id.eightstudio.www.orderfoods.Common.Common;
-import id.eightstudio.www.orderfoods.Database.Database;
+import id.eightstudio.www.orderfoods.Database.OpenHelper;
 import id.eightstudio.www.orderfoods.Model.Order;
 import id.eightstudio.www.orderfoods.Model.Request;
 import id.eightstudio.www.orderfoods.ViewHolder.CartAdapter;
@@ -46,6 +46,9 @@ public class Cart extends AppCompatActivity {
 
     List<Order> cart = new ArrayList<>();
     CartAdapter cartAdapter;
+    OpenHelper openHelper;
+    SQLiteDatabase sqliteDatabase;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +57,7 @@ public class Cart extends AppCompatActivity {
         //Set screen agar tidak memiliki toobar dan title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //Set aplikasi ke dalam keadaan fullscreen
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_cart);
 
@@ -62,6 +65,11 @@ public class Cart extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         requests = database.getReference("Requests");
 
+        openHelper = new OpenHelper(Cart.this);
+        sqliteDatabase = openHelper.getReadableDatabase();
+
+        //Init View
+        swipeRefreshLayout = findViewById(R.id.refreshListCart);
         recyclerView = findViewById(R.id.listCart);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -73,13 +81,27 @@ public class Cart extends AppCompatActivity {
         btnPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 showAlertDialog(Cart.this);
             }
         });
-        
+
+        //Default data
         loadListFood();
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //Mengambil semua data di dalam database
+                onDoneRefresh();
+            }
+        });
+
+    }
+
+    //Saat refresh sudah selesai
+    private void onDoneRefresh() {
+        loadListFood();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void showAlertDialog(final Context context) {
@@ -114,25 +136,29 @@ public class Cart extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //Cek alamat kosong ?
-                if (TextUtils.isEmpty(inputAdress.getText().toString())) {
-                    Toast.makeText(context, "Isikan Alamat", Toast.LENGTH_SHORT).show();
-                } else {
+                    //Cek alamat kosong ?
+                    if (TextUtils.isEmpty(inputAdress.getText().toString())) {
+                        Toast.makeText(context, "Periksa Alamat Pengiriman", Toast.LENGTH_SHORT).show();
+                    } else {
+                        //Order >= 1 ?
+                        if (openHelper.getOrderCount() <= 0) {
+                            Toast.makeText(context, "Order Minima 1 item", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Request request = new Request(
+                                    Common.currentUser.getPhone(),
+                                    Common.currentUser.getName(),
+                                    inputAdress.getText().toString(),
+                                    txtTotalPrice.getText().toString(),
+                                    cart
+                            );
 
-                    Request request = new Request(
-                            Common.currentUser.getPhone(),
-                            Common.currentUser.getName(),
-                            inputAdress.getText().toString(),
-                            txtTotalPrice.getText().toString(),
-                            cart
-                    );
+                            requests.child(requests.push().getKey()).setValue(request);
+                            openHelper.deleteAllOrder(sqliteDatabase);
+                            Toast.makeText(Cart.this, "Terimakasih", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
 
-                    requests.child(requests.push().getKey()).setValue(request);
-                    new Database(getBaseContext()).cleanCart();
-                    Toast.makeText(Cart.this, "Terimakasih", Toast.LENGTH_SHORT).show();
-                    finish();
-                    
-                }
+                    }
 
             }
         });
@@ -142,7 +168,8 @@ public class Cart extends AppCompatActivity {
 
     private void loadListFood() {
 
-        cart = new Database(this).getCarts();
+        //cart = new Database(this).getCarts();
+        cart = openHelper.getAllOrder();
         cartAdapter = new CartAdapter(cart, this);
         recyclerView.setAdapter(cartAdapter);
 
@@ -159,4 +186,25 @@ public class Cart extends AppCompatActivity {
         //txtTotalPrice.setText("$ "  + String.valueOf(total) );
 
     }
+
+    private void showEditItemCart(final Context context) {
+
+        final Dialog dialog = new Dialog(context);
+
+        //Set layout
+        dialog.setContentView(R.layout.popup_item_cart);
+
+        //Membuat agar dialog tidak hilang saat di click di area luar dialog
+        dialog.setCanceledOnTouchOutside(true);
+
+        //Membuat dialog agar berukuran responsive
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        int width = metrics.widthPixels;
+        dialog.getWindow().setLayout((6 * width) / 7, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        //Init View
+
+        dialog.show();
+    }
+
 }

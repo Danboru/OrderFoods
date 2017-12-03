@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import id.eightstudio.www.orderfoods.Common.Common;
+import id.eightstudio.www.orderfoods.Database.OpenHelper;
 import id.eightstudio.www.orderfoods.Model.User;
 
 public class Signin extends AppCompatActivity {
@@ -26,6 +27,8 @@ public class Signin extends AppCompatActivity {
     Button btnSignIn;
     FirebaseDatabase database;
     DatabaseReference table_user;
+
+    OpenHelper openHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,8 @@ public class Signin extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_signin);
+
+        openHelper = new OpenHelper(Signin.this);
 
         edtPassword = findViewById(R.id.edtPassword);
         edtPhone = findViewById(R.id.edtPhone);
@@ -67,6 +72,11 @@ public class Signin extends AppCompatActivity {
                                 Intent intent = new Intent(Signin.this, Home.class);
                                 Common.currentUser = user;
                                 startActivity(intent);
+
+                                //Menyimpan data current user
+                                //Bertujuan untuk tidak login
+                                //Data akan di hapus saat logout
+                                openHelper.addUser(new User(user.getPhone(), user.getPassword(), user.getIsStaff()));
                                 finish();
 
                             } else {

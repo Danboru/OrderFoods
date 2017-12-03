@@ -7,10 +7,17 @@
     android:background="@color/colorBackgroundMain"
     tools:context="id.eightstudio.www.orderfoods.Cart">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/listCart"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refreshListCart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/listCart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
     
     <android.support.v7.widget.CardView
         android:layout_alignParentBottom="true"

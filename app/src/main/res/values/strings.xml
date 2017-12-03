@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">OrderFoods</string>
     <string name="slogan">Rajane Eskrim</string>
     <string name="title_activity_home">Home</string>
@@ -7,4 +8,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_about">Tentang Aplikasi</string>
+    <string name="note_order_1">Pastikan anda mengingat 4 digit ID order anda</string>
+    <string name="note_order_2">Contoh :</string>
+    <string name="note_order_3">Ketika ID Anda <b>-L-PqTVKPRCZ0GyS20eO</b> maka yang harus anda ingat</string>
+    <string name="note_order_4"><b>20eO"</b></string>
+
 </resources>

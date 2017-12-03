@@ -9,31 +9,43 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".SplashScreen.SplashScreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Home"
             android:label="@string/title_activity_home"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Signin"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Signup"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FoodList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FoodDetail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Cart"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".OrderStatus"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".Signin" />
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            />
 
-        <activity android:name=".Signup" />
-
-
-        <activity android:name=".FoodList" />
-
-        <activity android:name=".FoodDetail" />
-
-        <activity android:name=".Cart" />
-
-        <activity android:name=".OrderStatus"/>
     </application>
 
 </manifest>

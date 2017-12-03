@@ -49,7 +49,7 @@ public class Home extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         //Set aplikasi ke dalam keadaan fullscreen
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_home);
 
@@ -62,7 +62,7 @@ public class Home extends AppCompatActivity
         category = database.getReference("Category");
 
         //Floating Action Bar
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
