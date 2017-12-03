@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import id.eightstudio.www.orderfoods.Common.Common;
 import id.eightstudio.www.orderfoods.Database.OpenHelper;
 import id.eightstudio.www.orderfoods.Interface.ItemClickListener;
 import id.eightstudio.www.orderfoods.Model.Order;
@@ -151,6 +152,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder> {
             @Override
             public void onClick(View v) {
                 openHelper.deleteOrder(orderList.get(position).getProductName());
+
+                //Set statusRefresh
+                //Status ini di funakan untuk mengantisipasi pembeli yang lupa refresh list
+                Common.StatusRefresh = false;
+
                 Toast.makeText(context, "Refresh List", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
@@ -161,6 +167,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder> {
             @Override
             public void onClick(View v) {
                 openHelper.updateOrder(new Order(String.valueOf(jumlah[0])), orderList.get(position).getProductName());
+
+                //Set statusRefresh
+                //Status ini di funakan untuk mengantisipasi pembeli yang lupa refresh list
+                Common.StatusRefresh = false;
+
                 Toast.makeText(context, "Refresh List", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }

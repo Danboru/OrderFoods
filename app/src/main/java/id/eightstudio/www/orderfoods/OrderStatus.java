@@ -74,7 +74,7 @@ public class OrderStatus extends AppCompatActivity {
 
                 viewHolder.txtOrderId.setText(adapter.getRef(position).getKey());
 
-
+                //Set status berdasarkan id
                 if (status.equals("0")){
                     viewHolder.txtOrderStatus.setTextColor(getColor(R.color.colorMenunggu));
                 } else if (status.equals("1")){
@@ -93,10 +93,9 @@ public class OrderStatus extends AppCompatActivity {
                 viewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLonggerPress) {
-
+                        //Action
                     }
                 });
-                
             }
         };
 

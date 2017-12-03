@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.andremion.counterfab.CounterFab;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -61,6 +62,10 @@ public class Cart extends AppCompatActivity {
 
         setContentView(R.layout.activity_cart);
 
+        //Set statusRefresh
+        //Status ini di funakan untuk mengantisipasi pembeli yang lupa refresh list
+        Common.StatusRefresh = true;
+
         //Firebase
         database = FirebaseDatabase.getInstance();
         requests = database.getReference("Requests");
@@ -101,6 +106,11 @@ public class Cart extends AppCompatActivity {
     //Saat refresh sudah selesai
     private void onDoneRefresh() {
         loadListFood();
+
+        //Set statusRefresh
+        //Status ini di funakan untuk mengantisipasi pembeli yang lupa refresh list
+        Common.StatusRefresh = true;
+
         swipeRefreshLayout.setRefreshing(false);
     }
 
@@ -140,22 +150,29 @@ public class Cart extends AppCompatActivity {
                     if (TextUtils.isEmpty(inputAdress.getText().toString())) {
                         Toast.makeText(context, "Periksa Alamat Pengiriman", Toast.LENGTH_SHORT).show();
                     } else {
-                        //Order >= 1 ?
-                        if (openHelper.getOrderCount() <= 0) {
-                            Toast.makeText(context, "Order Minima 1 item", Toast.LENGTH_SHORT).show();
+                        //Sudah di refresh listnya ?
+                        if (Common.StatusRefresh == false) {
+                            Toast.makeText(context, "Jangan Lupa Refresh Listnya", Toast.LENGTH_SHORT).show();
                         } else {
-                            Request request = new Request(
-                                    Common.currentUser.getPhone(),
-                                    Common.currentUser.getName(),
-                                    inputAdress.getText().toString(),
-                                    txtTotalPrice.getText().toString(),
-                                    cart
-                            );
+                            //Order >= 1 ?
+                            if (openHelper.getOrderCount() <= 0) {
+                                Toast.makeText(context, "Order Minima 1 item", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Request request = new Request(
+                                        Common.currentUser.getPhone(),
+                                        Common.currentUser.getName(),
+                                        inputAdress.getText().toString(),
+                                        txtTotalPrice.getText().toString(),
+                                        cart
+                                );
 
-                            requests.child(requests.push().getKey()).setValue(request);
-                            openHelper.deleteAllOrder(sqliteDatabase);
-                            Toast.makeText(Cart.this, "Terimakasih", Toast.LENGTH_SHORT).show();
-                            finish();
+                                requests.child(requests.push().getKey()).setValue(request);
+                                openHelper.deleteAllOrder(sqliteDatabase);
+
+                                Toast.makeText(Cart.this, "Terimakasih", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+
                         }
 
                     }

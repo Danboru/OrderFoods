@@ -40,6 +40,7 @@ dependencies {
     implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     implementation 'com.github.mancj:MaterialSearchBar:0.7.5'
     implementation 'com.github.Vatican-Cameos:CarouselPicker:v1.0'
+    implementation 'com.github.andremion:counterfab:1.0.1'
 
 }
 apply plugin: 'com.google.gms.google-services'

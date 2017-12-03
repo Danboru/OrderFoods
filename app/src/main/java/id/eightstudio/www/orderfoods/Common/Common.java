@@ -8,4 +8,5 @@ import id.eightstudio.www.orderfoods.Model.User;
 
 public class Common {
     public static User currentUser;
+    public static boolean StatusRefresh;
 }

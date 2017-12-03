@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,12 +22,14 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.andremion.counterfab.CounterFab;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import id.eightstudio.www.orderfoods.Common.Common;
+import id.eightstudio.www.orderfoods.Database.OpenHelper;
 import id.eightstudio.www.orderfoods.Interface.ItemClickListener;
 import id.eightstudio.www.orderfoods.Model.Category;
 import id.eightstudio.www.orderfoods.ViewHolder.MenuViewHolder;
@@ -34,13 +37,23 @@ import id.eightstudio.www.orderfoods.ViewHolder.MenuViewHolder;
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    NavigationView navigationView;
     FirebaseDatabase database;
     DatabaseReference category;
+    OpenHelper openHelper;
 
     TextView txtFullName;
+    CounterFab counterFab;
 
     RecyclerView recycler_menu;
     RecyclerView.LayoutManager layoutManager;
+
+
+    //Link reference
+    //https://stackoverflow.com/questions/30560663/navigationview-menu-items-with-counter-on-the-right
+    //https://stackoverflow.com/questions/31265530/how-can-i-get-menu-item-in-navigationview
+    Menu menu;
+    MenuItem menuCart, menuOrder;
 
     FirebaseRecyclerAdapter<Category, MenuViewHolder> adapter;
 
@@ -60,10 +73,26 @@ public class Home extends AppCompatActivity
         //Init Firebase
         database = FirebaseDatabase.getInstance();
         category = database.getReference("Category");
+        openHelper = new OpenHelper(this);
+
+        navigationView = findViewById(R.id.nav_view);
+
+        menu = navigationView.getMenu();
+        menuCart = menu.findItem(R.id.nav_cart);
+        menuOrder = menu.findItem(R.id.nav_orders);
+
+        //Set counter Defaulth
+        setMenuCounter(menuCart.getItemId() , openHelper.getOrderCount());
+        setMenuCounter(menuOrder.getItemId() , 10);
 
         //Floating Action Bar
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        //Library link https://github.com/andremion/CounterFab
+        counterFab = findViewById(R.id.fab);
+
+        //Set default counter
+        counterFab.setCount(openHelper.getOrderCount());
+
+        counterFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -95,10 +124,29 @@ public class Home extends AppCompatActivity
         layoutManager = new LinearLayoutManager(this);
         recycler_menu.setLayoutManager(layoutManager);
 
+        //Load data firebase
         loadMenu();
 
     }
 
+    //Set counter navivigationDrawer
+    private void setMenuCounter(@IdRes int itemId, int count) {
+        TextView view = (TextView) navigationView.getMenu().findItem(itemId).getActionView();
+        view.setText(count > 0 ? String.valueOf(count) : null);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        counterFab.setCount(openHelper.getOrderCount());
+
+        //Set counter
+        setMenuCounter(menuCart.getItemId() , openHelper.getOrderCount());
+        setMenuCounter(menuOrder.getItemId() , 10);
+
+    }
+
+    //Menampilkan food list berdasarkan kategori
     private void loadMenu() {
 
         adapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(
@@ -187,6 +235,7 @@ public class Home extends AppCompatActivity
 
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+
 
         if (id == R.id.nav_menu) {
 
