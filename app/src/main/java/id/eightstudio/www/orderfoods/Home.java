@@ -116,7 +116,12 @@ public class Home extends AppCompatActivity
         //Set FullName
         View headerView = navigationView.getHeaderView(0);
         txtFullName = headerView.findViewById(R.id.txtFullName);
-        txtFullName.setText(Common.currentUser.getName());
+
+        try {
+            txtFullName.setText(Common.currentUser.getName());
+        } catch (NullPointerException e) {
+            System.out.println("Null Pointer Name");
+        }
 
         //Load Menu Firebase
         recycler_menu = findViewById(R.id.recycler_menu);

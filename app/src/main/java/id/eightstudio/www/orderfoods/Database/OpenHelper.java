@@ -31,6 +31,8 @@ public class OpenHelper extends SQLiteOpenHelper {
     private static final String KEY_PASSWORD = "Password";
     private static final String KEY_IS_STAFF = "IsStaff";
 
+    SQLiteDatabase sqliteDatabase;
+
     public OpenHelper(Context context) {
         super(context, DB_NAME, null, DB_VER);
     }
@@ -225,6 +227,32 @@ public class OpenHelper extends SQLiteOpenHelper {
         cursor.close();          // Dont forget to close your cursor
         db.close();              //AND your Database!
         return hasObject;
+    }
+
+    //
+    //
+    public boolean isTableExists(String tableName, boolean openDb) {
+
+        if(openDb) {
+            if(sqliteDatabase == null || !sqliteDatabase.isOpen()) {
+                sqliteDatabase = getReadableDatabase();
+            }
+
+            if(!sqliteDatabase.isReadOnly()) {
+                sqliteDatabase.close();
+                sqliteDatabase = getReadableDatabase();
+            }
+        }
+
+        Cursor cursor = sqliteDatabase.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '"+ tableName +"'", null);
+        if(cursor!=null) {
+            if(cursor.getCount()>0) {
+                cursor.close();
+                return true;
+            }
+            cursor.close();
+        }
+        return false;
     }
 
 }

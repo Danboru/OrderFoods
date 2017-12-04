@@ -1,7 +1,6 @@
 package id.eightstudio.www.orderfoods;
 
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,21 +18,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import id.eightstudio.www.orderfoods.Database.OpenHelper;
 import id.eightstudio.www.orderfoods.Model.Food;
 import id.eightstudio.www.orderfoods.Model.Order;
-import in.goodiebag.carouselpicker.CarouselPicker;
 
 public class FoodDetail extends AppCompatActivity {
     private static final String TAG = "FoodDetail";
 
     TextView food_name, food_price, food_description;
     ImageView food_image;
-    CollapsingToolbarLayout collapsingToolbarLayout;
-    FloatingActionButton btnCart;
     ElegantNumberButton numberButton;
 
     String foodId = "";
@@ -50,7 +43,11 @@ public class FoodDetail extends AppCompatActivity {
 
         //Set aplikasi ke dalam keadaan fullscreen
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_food_detail);
+        try {
+            setContentView(R.layout.activity_food_detail);
+        } catch (Exception e) {
+            Log.d(TAG, "onCreate: " + e.getMessage());
+        }
 
         //Firebase
         database = FirebaseDatabase.getInstance();
@@ -59,9 +56,10 @@ public class FoodDetail extends AppCompatActivity {
 
         //Init View
         numberButton = findViewById(R.id.number_button);
-        btnCart = findViewById(R.id.btnCart);
+        CounterFab btnCart = findViewById(R.id.floatingBtnCart);
 
         //Tambah Ke keranjang
+        if (btnCart != null)
         btnCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,9 +94,11 @@ public class FoodDetail extends AppCompatActivity {
         food_price = findViewById(R.id.food_price);
         food_image = findViewById(R.id.img_food);
 
-        collapsingToolbarLayout = findViewById(R.id.collapsing);
-        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppbar);
-        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapseBar);
+        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing);
+        if (collapsingToolbarLayout != null) {
+            collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppbar);
+            collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapseBar);
+        }
 
         //GetIntent
         if (getIntent() != null)
@@ -115,8 +115,13 @@ public class FoodDetail extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 currentFood  = dataSnapshot.getValue(Food.class);
 
-                Picasso.with(getBaseContext()).load(currentFood.getImage()).into(food_image);
+                try {
+                    Picasso.with(getBaseContext()).load(currentFood.getImage()).into(food_image);
+                } catch (NullPointerException e) {
+                    Log.d(TAG, "onDataChange: " + e.getMessage());
+                }
 
+                CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing);
                 collapsingToolbarLayout.setTitle(currentFood.getName());
                 food_price.setText("$ " + currentFood.getPrice());
                 food_name.setText(currentFood.getName());

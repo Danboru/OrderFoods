@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".SplashScreen.SplashScreen"
             android:screenOrientation="portrait">
@@ -18,26 +19,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".Home"
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".Signin"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".Signup"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".FoodList"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            />
+
         <activity
             android:name=".FoodDetail"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".Cart"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".OrderStatus"
             android:screenOrientation="portrait" />

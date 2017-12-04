@@ -73,10 +73,23 @@ public class Signin extends AppCompatActivity {
                                 Common.currentUser = user;
                                 startActivity(intent);
 
-                                //Menyimpan data current user
-                                //Bertujuan untuk tidak login
-                                //Data akan di hapus saat logout
-                                openHelper.addUser(new User(user.getPhone(), user.getPassword(), user.getIsStaff()));
+                                if (openHelper.isTableExists("CurrentUser", true)) {
+
+                                    //Menyimpan data current user
+                                    //Bertujuan untuk tidak login
+                                    //Data akan di hapus saat logout
+                                    openHelper.addUser(new User(user.getPhone(), user.getPassword(), user.getIsStaff()));
+
+                                } else {
+
+                                    openHelper = new OpenHelper(Signin.this);
+                                    //Menyimpan data current user
+                                    //Bertujuan untuk tidak login
+                                    //Data akan di hapus saat logout
+                                    openHelper.addUser(new User(user.getPhone(), user.getPassword(), user.getIsStaff()));
+
+                                }
+
                                 finish();
 
                             } else {

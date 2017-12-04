@@ -1,13 +1,18 @@
 package id.eightstudio.www.orderfoods;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -26,6 +31,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import id.eightstudio.www.orderfoods.Interface.ItemClickListener;
 import id.eightstudio.www.orderfoods.Model.Food;
+import id.eightstudio.www.orderfoods.Utils.GridSpacingItemDecoration;
 import id.eightstudio.www.orderfoods.ViewHolder.FoodViewHolder;
 
 public class FoodList extends AppCompatActivity {
@@ -97,6 +103,7 @@ public class FoodList extends AppCompatActivity {
             }
 
         });
+
         materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
             @Override
             public void onSearchStateChanged(boolean enabled) {
@@ -196,7 +203,21 @@ public class FoodList extends AppCompatActivity {
             }
         };
 
-        recyclerView.setLayoutManager(layoutManager);
+
+        //Costum grid recycler
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(2), true));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+
+//        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+
     }
+
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
+
+
 }
