@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import id.eightstudio.www.orderfoods.Interface.ItemClickListener;
+import id.eightstudio.www.orderfoods.Interface.OnClickListener;
 import id.eightstudio.www.orderfoods.R;
 
 /**
@@ -15,7 +15,7 @@ public class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
     public TextView txtOrderId, txtOrderStatus, txtOrderPhone, txtOrderAddress;
 
-    private ItemClickListener itemClickListener;
+    private OnClickListener onClickListener;
 
     public OrderViewHolder(View itemView) {
         super(itemView);
@@ -28,12 +28,12 @@ public class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnC
         itemView.setOnClickListener(this);
     }
 
-    public void setItemClickListener(ItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
 
     @Override
     public void onClick(View v) {
-        this.itemClickListener.onClick(v, getAdapterPosition(), false);
+        this.onClickListener.onClick(v, getAdapterPosition(), false);
     }
 }

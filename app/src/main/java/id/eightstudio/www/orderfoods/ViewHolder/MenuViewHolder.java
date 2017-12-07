@@ -5,14 +5,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import id.eightstudio.www.orderfoods.Interface.ItemClickListener;
+import id.eightstudio.www.orderfoods.Interface.OnClickListener;
 import id.eightstudio.www.orderfoods.R;
 
 public class MenuViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public ImageView imageView;
     public TextView txtMenuName;
-    ItemClickListener onClickListener;
+    OnClickListener onClickListener;
 
     public MenuViewHolder(View itemView) {
         super(itemView);
@@ -24,7 +24,7 @@ public class MenuViewHolder extends RecyclerView.ViewHolder implements View.OnCl
 
     }
 
-    public void setOnClickListener(ItemClickListener onClickListener) {
+    public void setOnClickListener(OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
     }
 

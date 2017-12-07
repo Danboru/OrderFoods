@@ -17,7 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import id.eightstudio.www.orderfoods.Common.Common;
-import id.eightstudio.www.orderfoods.Interface.ItemClickListener;
+import id.eightstudio.www.orderfoods.Interface.OnClickListener;
 import id.eightstudio.www.orderfoods.Model.Request;
 import id.eightstudio.www.orderfoods.ViewHolder.OrderViewHolder;
 
@@ -86,7 +86,7 @@ public class OrderStatus extends AppCompatActivity {
                 viewHolder.txtOrderAddress.setText(model.getAddress());
                 viewHolder.txtOrderPhone.setText(model.getPhone());
                 
-                viewHolder.setItemClickListener(new ItemClickListener() {
+                viewHolder.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLonggerPress) {
                         //Action

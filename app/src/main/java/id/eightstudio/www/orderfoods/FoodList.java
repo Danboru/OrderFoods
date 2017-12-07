@@ -8,13 +8,11 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.WindowManager;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -29,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import id.eightstudio.www.orderfoods.Interface.ItemClickListener;
+import id.eightstudio.www.orderfoods.Interface.OnClickListener;
 import id.eightstudio.www.orderfoods.Model.Food;
 import id.eightstudio.www.orderfoods.Utils.GridSpacingItemDecoration;
 import id.eightstudio.www.orderfoods.ViewHolder.FoodViewHolder;
@@ -122,7 +120,6 @@ public class FoodList extends AppCompatActivity {
 
             @Override
             public void onButtonClicked(int buttonCode) {
-
             }
         });
 
@@ -143,7 +140,7 @@ public class FoodList extends AppCompatActivity {
                 Picasso.with(FoodList.this).load(model.getImage()).into(viewHolder.food_image);
 
                 final Food local = model;
-                viewHolder.setOnClickListener(new ItemClickListener() {
+                viewHolder.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLonggerPress) {
 
@@ -190,7 +187,7 @@ public class FoodList extends AppCompatActivity {
                 Picasso.with(FoodList.this).load(model.getImage()).into(viewHolder.food_image);
 
                 final Food local = model;
-                viewHolder.setOnClickListener(new ItemClickListener() {
+                viewHolder.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLonggerPress) {
 

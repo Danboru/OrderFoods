@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -18,7 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,7 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import id.eightstudio.www.orderfoods.Common.Common;
 import id.eightstudio.www.orderfoods.Database.OpenHelper;
-import id.eightstudio.www.orderfoods.Interface.ItemClickListener;
+import id.eightstudio.www.orderfoods.Interface.OnClickListener;
 import id.eightstudio.www.orderfoods.Model.Category;
 import id.eightstudio.www.orderfoods.ViewHolder.MenuViewHolder;
 
@@ -59,10 +57,7 @@ public class Home extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //Set aplikasi ke dalam keadaan fullscreen
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         setContentView(R.layout.activity_home);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -152,7 +147,6 @@ public class Home extends AppCompatActivity
 
     //Menampilkan food list berdasarkan kategori
     private void loadMenu() {
-
         adapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(
                 Category.class,
                 R.layout.menu_item,
@@ -166,7 +160,7 @@ public class Home extends AppCompatActivity
                 Picasso.with(Home.this).load(model.getImage()).into(viewHolder.imageView);
 
                 final Category clickItem = model;
-                viewHolder.setOnClickListener(new ItemClickListener() {
+                viewHolder.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLonggerPress) {
 
@@ -216,9 +210,7 @@ public class Home extends AppCompatActivity
     }
 
     private void showDialogTentang(Context context) {
-
         final Dialog dialog = new Dialog(context);
-
         //Set layout
         dialog.setContentView(R.layout.popup_about);
 
@@ -236,29 +228,20 @@ public class Home extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-
         if (id == R.id.nav_menu) {
-
         } else if (id == R.id.nav_cart) {
-
             Intent cart = new Intent(Home.this, Cart.class);
             startActivity(cart);
-
         } else if (id == R.id.nav_orders) {
-
             Intent order = new Intent(Home.this, OrderStatus.class);
             startActivity(order);
-
         } else if (id == R.id.nav_log_out) {
-
             Intent signin = new Intent(Home.this, Signin.class);
             signin.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(signin);
-
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

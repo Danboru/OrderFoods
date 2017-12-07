@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,12 +31,14 @@ import java.util.Locale;
 
 import id.eightstudio.www.orderfoods.Common.Common;
 import id.eightstudio.www.orderfoods.Database.OpenHelper;
+import id.eightstudio.www.orderfoods.Interface.RecyclerViewClickListener;
 import id.eightstudio.www.orderfoods.Model.Order;
 import id.eightstudio.www.orderfoods.Model.Request;
 import id.eightstudio.www.orderfoods.Utils.ViewBehavior;
 import id.eightstudio.www.orderfoods.ViewHolder.CartAdapter;
+import in.goodiebag.carouselpicker.CarouselPicker;
 
-public class Cart extends AppCompatActivity {
+public class Cart extends AppCompatActivity implements RecyclerViewClickListener {
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -57,12 +60,9 @@ public class Cart extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //Set screen agar tidak memiliki toobar dan title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //Set aplikasi ke dalam keadaan fullscreen
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         setContentView(R.layout.activity_cart);
 
         //Set statusRefresh
@@ -73,6 +73,7 @@ public class Cart extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         requests = database.getReference("Requests");
 
+        //SQLite
         openHelper = new OpenHelper(Cart.this);
         sqliteDatabase = openHelper.getReadableDatabase();
 
@@ -97,38 +98,17 @@ public class Cart extends AppCompatActivity {
         //Default data
         loadListFood();
 
-        //Refresh recyclerView
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                //Mengambil semua data di dalam database
-                onDoneRefresh();
-            }
-        });
-
+        //Hide view when scrolling
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) viewDetailTotal.getLayoutParams();
         layoutParams.setBehavior(new ViewBehavior());
 
     }
 
-    //Saat refresh sudah selesai
-    private void onDoneRefresh() {
-        loadListFood();
-
-        //Set statusRefresh
-        //Status ini di funakan untuk mengantisipasi pembeli yang lupa refresh list
-        Common.StatusRefresh = true;
-
-        swipeRefreshLayout.setRefreshing(false);
-    }
-
+    //Show dialog
     private void showAlertDialog(final Context context) {
-
         final Dialog dialog = new Dialog(context);
-
         //Set layout
         dialog.setContentView(R.layout.place_order);
-
         //Membuat agar dialog tidak hilang saat di click di area luar dialog
         dialog.setCanceledOnTouchOutside(true);
 
@@ -188,28 +168,25 @@ public class Cart extends AppCompatActivity {
         dialog.show();
     }
 
+    //TODO : Load semua data dengan id current user
     private void loadListFood() {
 
         cart = openHelper.getAllOrderFilter(Common.currentUser.getPhone());
-        cartAdapter = new CartAdapter(cart, this);
+        cartAdapter = new CartAdapter(cart, this, this);
         recyclerView.setAdapter(cartAdapter);
 
-        //Calculate total
-        int total = 0;
-        for ( Order order : cart ) {
-            total += (Integer.parseInt(order.getPrice())) * (Integer.parseInt(order.getQuantity()));
-        }
-
-        Locale locale = new Locale("en", "US");
-        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
-
-        txtTotalPrice.setText(numberFormat.format(total));
-        //txtTotalPrice.setText("$ "  + String.valueOf(total) );
+        hitungTotalHarga();
 
     }
 
-    private void showEditItemCart(final Context context) {
+    @Override
+    public void recyclerViewListClicked(View v, int position) {
+        showEditItemCart(Cart.this, cart, position);
+    }
 
+
+    //TODO : Click event item cart (Delete, Update)
+    private void showEditItemCart(final Context context, final List<Order> orderList, final int position) {
         final Dialog dialog = new Dialog(context);
 
         //Set layout
@@ -224,8 +201,98 @@ public class Cart extends AppCompatActivity {
         dialog.getWindow().setLayout((6 * width) / 7, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         //Init View
+        TextView tester = dialog.findViewById(R.id.txtTester);
+        CarouselPicker carouselPicker = dialog.findViewById(R.id.carousel);
+        Button updateItem = dialog.findViewById(R.id.btnUpdateItemCart);
+        Button deleteItem = dialog.findViewById(R.id.btnDeleteItemCart);
+
+        //Populate data
+        final List<CarouselPicker.PickerItem> textItems = new ArrayList<>();
+
+        //20 here represents the textSize in dp, change it to the value you want.
+        for (int i = 0; i < 20; i++) {
+            textItems.add(new CarouselPicker.TextItem("" + (i + 1), 20));
+        }
+
+        //Library link https://github.com/GoodieBag/CarouselPicker
+        CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(context, textItems, 0);
+        carouselPicker.setAdapter(textAdapter);
+
+        final int[] jumlah = {1};
+        carouselPicker.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position) {
+                //position of the selected item
+                jumlah[0] = Integer.parseInt(textItems.get(position).getText());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
+
+
+        //Inisialisasi
+        tester.setText(orderList.get(position).getProductName());
+
+        //Delete item
+        deleteItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openHelper.deleteOrder(orderList.get(position).getProductName());
+
+                //Taken from https://stackoverflow.com/questions/31367599/how-to-update-recyclerview-adapter-data
+                orderList.remove(position);
+                recyclerView.removeViewAt(position);
+                cartAdapter.notifyItemRemoved(position);
+                cartAdapter.notifyItemRangeChanged(position, orderList.size());
+
+                hitungTotalHarga();
+
+                dialog.dismiss();
+            }
+        });
+
+        //Update item
+        updateItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openHelper.updateOrder(new Order(String.valueOf(jumlah[0])), orderList.get(position).getProductName());
+                //Memanggil fungsi
+                refreshList();
+                dialog.dismiss();
+            }
+        });
 
         dialog.show();
+    }
+
+    //TODO : Menghitung total harga pembelian
+    private void hitungTotalHarga() {
+        //Calculate total
+        int total = 0;
+        for ( Order order : cart ) {
+            total += (Integer.parseInt(order.getPrice())) * (Integer.parseInt(order.getQuantity()));
+        }
+
+        Locale locale = new Locale("en", "US");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+
+        txtTotalPrice.setText(numberFormat.format(total));
+        //txtTotalPrice.setText("$ "  + String.valueOf(total) );
+
+    }
+
+    //TODO :
+    public void refreshList() {
+        cart = openHelper.getAllOrderFilter(Common.currentUser.getPhone());
+        cartAdapter = new CartAdapter(cart, this, this);
+        recyclerView.setAdapter(cartAdapter);
+
+        hitungTotalHarga();
     }
 
 }
