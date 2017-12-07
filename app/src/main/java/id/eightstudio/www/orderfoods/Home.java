@@ -48,7 +48,6 @@ public class Home extends AppCompatActivity
     RecyclerView recycler_menu;
     RecyclerView.LayoutManager layoutManager;
 
-
     //Link reference
     //https://stackoverflow.com/questions/30560663/navigationview-menu-items-with-counter-on-the-right
     //https://stackoverflow.com/questions/31265530/how-can-i-get-menu-item-in-navigationview
@@ -82,15 +81,15 @@ public class Home extends AppCompatActivity
         menuOrder = menu.findItem(R.id.nav_orders);
 
         //Set counter Defaulth
-        setMenuCounter(menuCart.getItemId() , openHelper.getOrderCount());
-        setMenuCounter(menuOrder.getItemId() , 10);
+        setMenuCounter(menuCart.getItemId() , openHelper.getOrderCountFilter(Common.currentUser.getPhone()));
+        setMenuCounter(menuOrder.getItemId() , 0);
 
         //Floating Action Bar
         //Library link https://github.com/andremion/CounterFab
         counterFab = findViewById(R.id.fab);
 
         //Set default counter
-        counterFab.setCount(openHelper.getOrderCount());
+        counterFab.setCount(openHelper.getOrderCountFilter(Common.currentUser.getPhone()));
 
         counterFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,11 +142,11 @@ public class Home extends AppCompatActivity
     @Override
     protected void onRestart() {
         super.onRestart();
-        counterFab.setCount(openHelper.getOrderCount());
+        counterFab.setCount(openHelper.getOrderCountFilter(Common.currentUser.getPhone()));
 
         //Set counter
-        setMenuCounter(menuCart.getItemId() , openHelper.getOrderCount());
-        setMenuCounter(menuOrder.getItemId() , 10);
+        setMenuCounter(menuCart.getItemId() , openHelper.getOrderCountFilter(Common.currentUser.getPhone()));
+        setMenuCounter(menuOrder.getItemId() , 0);
 
     }
 
@@ -186,7 +185,7 @@ public class Home extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {

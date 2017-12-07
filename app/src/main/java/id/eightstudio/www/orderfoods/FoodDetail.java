@@ -1,15 +1,14 @@
 package id.eightstudio.www.orderfoods;
 
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.andremion.counterfab.CounterFab;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import id.eightstudio.www.orderfoods.Common.Common;
 import id.eightstudio.www.orderfoods.Database.OpenHelper;
 import id.eightstudio.www.orderfoods.Model.Food;
 import id.eightstudio.www.orderfoods.Model.Order;
@@ -40,37 +40,24 @@ public class FoodDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //Set aplikasi ke dalam keadaan fullscreen
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        try {
-            setContentView(R.layout.activity_food_detail);
-        } catch (Exception e) {
-            Log.d(TAG, "onCreate: " + e.getMessage());
-        }
+        setContentView(R.layout.activity_food_detail);
 
         //Firebase
         database = FirebaseDatabase.getInstance();
         foods = database.getReference("Foods");
+
+        //SQLite
         openHelper = new OpenHelper(FoodDetail.this);
 
         //Init View
         numberButton = findViewById(R.id.number_button);
-        CounterFab btnCart = findViewById(R.id.floatingBtnCart);
+        Button btnCart = findViewById(R.id.floatingBtnCart);
 
         //Tambah Ke keranjang
         if (btnCart != null)
         btnCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                /*new Database(getBaseContext()).addToCart(new Order(
-                        foodId,
-                        currentFood.getName(),
-                        numberButton.getNumber(),
-                        currentFood.getPrice(),
-                        currentFood.getDiscount()
-                ));*/
 
                 //TODO : Periksa item sudah di keranjang ?
                 if (openHelper.hasObject(currentFood.getName()) == true) {
@@ -81,11 +68,12 @@ public class FoodDetail extends AppCompatActivity {
                             currentFood.getName(),
                             numberButton.getNumber(),
                             currentFood.getPrice(),
-                            currentFood.getDiscount()));
+                            currentFood.getDiscount(),
+                            Common.currentUser.getPhone()
+                            ));
 
                     Toast.makeText(FoodDetail.this, "Added to Cart", Toast.LENGTH_SHORT).show();
                 }
-                
             }
         });
 
@@ -93,12 +81,6 @@ public class FoodDetail extends AppCompatActivity {
         food_name = findViewById(R.id.food_name);
         food_price = findViewById(R.id.food_price);
         food_image = findViewById(R.id.img_food);
-
-        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing);
-        if (collapsingToolbarLayout != null) {
-            collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppbar);
-            collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapseBar);
-        }
 
         //GetIntent
         if (getIntent() != null)
@@ -121,8 +103,7 @@ public class FoodDetail extends AppCompatActivity {
                     Log.d(TAG, "onDataChange: " + e.getMessage());
                 }
 
-                CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing);
-                collapsingToolbarLayout.setTitle(currentFood.getName());
+                //CurrentFood.getName()
                 food_price.setText("$ " + currentFood.getPrice());
                 food_name.setText(currentFood.getName());
                 food_description.setText(currentFood.getDescrption());

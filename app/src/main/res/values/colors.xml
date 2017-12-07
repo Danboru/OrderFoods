@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorBackgroundMain">#f7f7f7</color>
+a
     <color name="colorPrimaryDark">#0097A7</color> <!-- [ TEAL - 800 ] -->
     <color name="colorPrimary">#0097A7</color> <!-- [ TEAL - 800 ] -->
     <color name="colorPrimaryLight">#00BCD4</color> <!-- [ TEAL - 100 ] -->
@@ -21,5 +21,6 @@
     <color name="colorDiProses">#2dc6e1</color>
     <color name="colorPengiriman">#ff7b00</color>
     <color name="colorDiTerima">#65da21</color>
+    <color name="colorBackgroundMain">#fff</color>
 
 </resources>

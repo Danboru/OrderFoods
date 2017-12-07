@@ -43,7 +43,6 @@ class CartViewHolder extends RecyclerView.ViewHolder {
         img_cart_count = itemView.findViewById(R.id.cart_item_count);
 
     }
-
 }
 
 public class CartAdapter extends RecyclerView.Adapter<CartViewHolder> {

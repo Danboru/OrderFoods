@@ -1,8 +1,9 @@
 <resources>
 
     <string name="app_name">Rajane Eskrim</string>
-    <string name="slogan">Rajane Eskrim</string>
     <string name="title_activity_home">Home</string>
+
+    <string name="slogan">Rajane Eskrim</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

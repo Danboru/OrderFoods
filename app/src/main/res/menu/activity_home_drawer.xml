@@ -8,26 +8,26 @@
 
         <item
             android:id="@+id/nav_menu"
-            android:icon="@drawable/ic_restaurant_black_24dp"
+            android:icon="@drawable/ic_restaurant_black"
             android:title="List Menu" />
 
         <item
             android:id="@+id/nav_cart"
-            android:icon="@drawable/ic_shopping_cart_black_24dp"
+            android:icon="@drawable/ic_shopping_cart_black"
             android:title="Keranjang Belanja"
             app:actionLayout="@layout/counter_layout"
             />
 
         <item
             android:id="@+id/nav_orders"
-            android:icon="@drawable/ic_access_time_black_24dp"
+            android:icon="@drawable/ic_access_time_black"
             android:title="Pesanan Anda"
             app:actionLayout="@layout/counter_layout"
             />
 
         <item
             android:id="@+id/nav_log_out"
-            android:icon="@drawable/ic_close_black_24dp"
+            android:icon="@drawable/ic_close_black"
             android:title="Keluar" />
 
     </group>

@@ -25,6 +25,7 @@ public class OpenHelper extends SQLiteOpenHelper {
     private static final String KEY_QUANTITY = "Quantity";
     private static final String KEY_PRICE = "Price";
     private static final String KEY_DISCOUNT = "Discount";
+    private static final String KEY_USER = "UserId";
 
     private static final String TABLE_CURRENT_USER = "CurrentUser";
     private static final String KEY_PHONE = "UserName";
@@ -43,7 +44,7 @@ public class OpenHelper extends SQLiteOpenHelper {
         String CREATE_ORDER_TABLE = "CREATE TABLE " + TABLE_ORDER + "("
                 + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_NAME + " TEXT, "
                 + KEY_QUANTITY + " TEXT, " + KEY_PRICE + " TEXT, "
-                + KEY_DISCOUNT + " TEXT " + ")";
+                + KEY_DISCOUNT + " TEXT, " + KEY_USER + " TEXT" + ")";
 
         String CREATE_CURRENT_USER_TABLE = "CREATE TABLE " + TABLE_CURRENT_USER + "("
                 + KEY_PHONE + " STRING PRIMARY KEY, " + KEY_PASSWORD + " TEXT, "
@@ -68,22 +69,10 @@ public class OpenHelper extends SQLiteOpenHelper {
         values.put(KEY_QUANTITY, order.getQuantity());
         values.put(KEY_PRICE, order.getPrice());
         values.put(KEY_DISCOUNT, order.getDiscount());
+        values.put(KEY_USER, order.getKeyUser());
 
         // Inserting Row
         db.insert(TABLE_ORDER, null, values);
-    }
-
-    //
-    public void addUser(User user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(KEY_PHONE, user.getPhone());
-        values.put(KEY_PASSWORD, user.getPassword());
-        values.put(KEY_IS_STAFF, user.getIsStaff());
-
-        // Inserting Row
-        db.insert(TABLE_CURRENT_USER, null, values);
     }
 
     //FIX
@@ -122,28 +111,39 @@ public class OpenHelper extends SQLiteOpenHelper {
         return orderList;
     }
 
-    //
-    public ArrayList<User> getAllUser() {
-        ArrayList<User> userList = new ArrayList<User>();
+    public ArrayList<Order> getAllOrderFilter(String userId) {
+        ArrayList<Order> orderList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
 
         // Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_CURRENT_USER;
+        String selectString = "SELECT * FROM " + TABLE_ORDER + " WHERE " + KEY_USER + " =?";
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Log.d(TAG, "Menjalankan Query : " + selectString);
+        Cursor cursor = db.rawQuery(selectString, new String[] {userId});
+
+        //Hitung Jumlah data
+        int count = 0;
+            while(cursor.moveToNext()){
+                count++;
+            }
+
+            //here, count is records found
+            Log.d(TAG, String.format("%d Records Found", count));
 
         // Looping semua data dan menginputkan data ke dalamnya
         try {
 
             if (cursor.moveToFirst()) {
                 do {
-                    User user = new User();
-                    user.setPhone(cursor.getString(0));
-                    user.setPassword(cursor.getString(1));
-                    user.setIsStaff(cursor.getString(2));
+                    Order order = new Order();
+                    order.setProductId(cursor.getString(0));
+                    order.setProductName(cursor.getString(1));
+                    order.setQuantity(cursor.getString(2));
+                    order.setPrice(cursor.getString(3));
+                    order.setDiscount(cursor.getString(4));
 
-                    //Menambahkan user ke list
-                    userList.add(user);
+                    //Menambahkan order ke list
+                    orderList.add(order);
 
                 } while (cursor.moveToNext());
             }
@@ -153,7 +153,7 @@ public class OpenHelper extends SQLiteOpenHelper {
         }
 
         // return orderList
-        return userList;
+        return orderList;
     }
 
     //FIX
@@ -181,24 +181,8 @@ public class OpenHelper extends SQLiteOpenHelper {
         db.execSQL("delete from "+ TABLE_ORDER);
     }
 
-    //
-    public void deleteAllUser(SQLiteDatabase db){
-        db.execSQL("delete from "+ TABLE_CURRENT_USER);
-    }
-
     //FIX
-    public int getOrderCount() {
-
-        String countQuery = "SELECT * FROM " + TABLE_ORDER;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        int cnt = cursor.getCount();
-
-        return cnt;
-    }
-
-    //Link reference https://stackoverflow.com/questions/20415309/android-sqlite-how-to-check-if-a-record-exists
-    //FIX
+    //Taken from https://stackoverflow.com/questions/20415309/android-sqlite-how-to-check-if-a-record-exists
     public boolean hasObject(String name) {
         SQLiteDatabase db = getWritableDatabase();
         String selectString = "SELECT * FROM " + TABLE_ORDER + " WHERE " + KEY_NAME + " =?";
@@ -229,7 +213,27 @@ public class OpenHelper extends SQLiteOpenHelper {
         return hasObject;
     }
 
+    //FIX
+    public int getOrderCount() {
+        String countQuery = "SELECT * FROM " + TABLE_ORDER;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int cnt = cursor.getCount();
+
+        return cnt;
+    }
+
     //
+    public int getOrderCountFilter(String userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String countQuery = "SELECT * FROM " + TABLE_ORDER + " WHERE " + KEY_USER + " =?";
+
+        Cursor cursor = db.rawQuery(countQuery, new String[] {userId});
+        int cnt = cursor.getCount();
+
+        return cnt;
+    }
+
     //
     public boolean isTableExists(String tableName, boolean openDb) {
 

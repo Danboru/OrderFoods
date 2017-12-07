@@ -6,21 +6,18 @@ package id.eightstudio.www.orderfoods.Model;
 
 public class User {
 
-    private String Name, Password, IsStaff, Phone;
+    private String Name, TanggalLahir, BulanLahir, TahunLahir, Password, IsStaff, Phone;
 
     public User() {
     }
 
-    public User(String phone, String password, String isStaff) {
+    public User(String name, String tanggalLahir, String bulanLahir, String tahunLahir, String password, String isStaff) {
+        Name = name;
+        TanggalLahir = tanggalLahir;
+        BulanLahir = bulanLahir;
+        TahunLahir = tahunLahir;
         Password = password;
         IsStaff = isStaff;
-        Phone = phone;
-    }
-
-    public User(String name, String password) {
-        Name = name;
-        Password = password;
-        IsStaff = "false";
     }
 
     public String getName() {
@@ -31,6 +28,30 @@ public class User {
         Name = name;
     }
 
+    public String getTanggalLahir() {
+        return TanggalLahir;
+    }
+
+    public void setTanggalLahir(String tanggalLahir) {
+        TanggalLahir = tanggalLahir;
+    }
+
+    public String getBulanLahir() {
+        return BulanLahir;
+    }
+
+    public void setBulanLahir(String bulanLahir) {
+        BulanLahir = bulanLahir;
+    }
+
+    public String getTahunLahir() {
+        return TahunLahir;
+    }
+
+    public void setTahunLahir(String tahunLahir) {
+        TahunLahir = tahunLahir;
+    }
+
     public String getPassword() {
         return Password;
     }
@@ -39,19 +60,19 @@ public class User {
         Password = password;
     }
 
-    public String getPhone() {
-        return Phone;
-    }
-
-    public void setPhone(String phone) {
-        Phone = phone;
-    }
-
     public String getIsStaff() {
         return IsStaff;
     }
 
     public void setIsStaff(String isStaff) {
         IsStaff = isStaff;
+    }
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String phone) {
+        Phone = phone;
     }
 }

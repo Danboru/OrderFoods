@@ -3,7 +3,6 @@ package id.eightstudio.www.orderfoods;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -33,6 +32,7 @@ public class MainActivity extends Activity {
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/julietta.ttf");
         txtSlogan.setTypeface(typeface);
 
+        //Menuju ke halaman Daftar
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,6 +41,7 @@ public class MainActivity extends Activity {
             }
         });
 
+        //Menuju ke halaman Masuk
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

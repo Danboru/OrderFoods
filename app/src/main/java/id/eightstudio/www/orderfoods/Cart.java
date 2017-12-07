@@ -180,11 +180,8 @@ public class Cart extends AppCompatActivity {
                                 Toast.makeText(Cart.this, "Terimakasih", Toast.LENGTH_SHORT).show();
                                 finish();
                             }
-
                         }
-
                     }
-
             }
         });
 
@@ -193,8 +190,7 @@ public class Cart extends AppCompatActivity {
 
     private void loadListFood() {
 
-        //cart = new Database(this).getCarts();
-        cart = openHelper.getAllOrder();
+        cart = openHelper.getAllOrderFilter(Common.currentUser.getPhone());
         cartAdapter = new CartAdapter(cart, this);
         recyclerView.setAdapter(cartAdapter);
 
