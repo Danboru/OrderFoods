@@ -13,6 +13,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -53,7 +54,7 @@ public class FoodList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //Set aplikasi ke dalam keadaan fullscreen
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_food_list);
         ButterKnife.bind(this);
@@ -184,6 +185,7 @@ public class FoodList extends AppCompatActivity {
             protected void populateViewHolder(FoodViewHolder viewHolder, Food model, int position) {
 
                 viewHolder.food_name.setText(model.getName());
+                viewHolder.food_price.setText("Rp " + model.getPrice());
                 Picasso.with(FoodList.this).load(model.getImage()).into(viewHolder.food_image);
 
                 final Food local = model;
@@ -202,11 +204,11 @@ public class FoodList extends AppCompatActivity {
 
 
         //Costum grid recycler
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(2), true));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(0), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
-//        recyclerView.setLayoutManager(layoutManager);
+        //recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
     }

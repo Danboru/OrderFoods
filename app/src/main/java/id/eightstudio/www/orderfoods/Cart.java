@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -53,7 +54,6 @@ public class Cart extends AppCompatActivity implements RecyclerViewClickListener
     CartAdapter cartAdapter;
     OpenHelper openHelper;
     SQLiteDatabase sqliteDatabase;
-    SwipeRefreshLayout swipeRefreshLayout;
 
     CardView viewDetailTotal;
 
@@ -62,6 +62,8 @@ public class Cart extends AppCompatActivity implements RecyclerViewClickListener
         super.onCreate(savedInstanceState);
         //Set screen agar tidak memiliki toobar dan title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //Set aplikasi ke dalam keadaan fullscreen
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //Set aplikasi ke dalam keadaan fullscreen
         setContentView(R.layout.activity_cart);
 
@@ -78,7 +80,6 @@ public class Cart extends AppCompatActivity implements RecyclerViewClickListener
         sqliteDatabase = openHelper.getReadableDatabase();
 
         //Init View
-        swipeRefreshLayout = findViewById(R.id.refreshListCart);
         recyclerView = findViewById(R.id.listCart);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -99,8 +100,8 @@ public class Cart extends AppCompatActivity implements RecyclerViewClickListener
         loadListFood();
 
         //Hide view when scrolling
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) viewDetailTotal.getLayoutParams();
-        layoutParams.setBehavior(new ViewBehavior());
+        //CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) viewDetailTotal.getLayoutParams();
+        //layoutParams.setBehavior(new ViewBehavior());
 
     }
 
@@ -138,10 +139,6 @@ public class Cart extends AppCompatActivity implements RecyclerViewClickListener
                     if (TextUtils.isEmpty(inputAdress.getText().toString())) {
                         Toast.makeText(context, "Periksa Alamat Pengiriman", Toast.LENGTH_SHORT).show();
                     } else {
-                        //Sudah di refresh listnya ?
-                        if (Common.StatusRefresh == false) {
-                            Toast.makeText(context, "Jangan Lupa Refresh Listnya", Toast.LENGTH_SHORT).show();
-                        } else {
                             //Order >= 1 ?
                             if (openHelper.getOrderCount() <= 0) {
                                 Toast.makeText(context, "Order Minima 1 item", Toast.LENGTH_SHORT).show();
@@ -160,7 +157,6 @@ public class Cart extends AppCompatActivity implements RecyclerViewClickListener
                                 Toast.makeText(Cart.this, "Terimakasih", Toast.LENGTH_SHORT).show();
                                 finish();
                             }
-                        }
                     }
             }
         });
@@ -270,6 +266,15 @@ public class Cart extends AppCompatActivity implements RecyclerViewClickListener
         dialog.show();
     }
 
+    //TODO : Refresh RecyclerView
+    public void refreshList() {
+        cart = openHelper.getAllOrderFilter(Common.currentUser.getPhone());
+        cartAdapter = new CartAdapter(cart, this, this);
+        recyclerView.setAdapter(cartAdapter);
+
+        hitungTotalHarga();
+    }
+
     //TODO : Menghitung total harga pembelian
     private void hitungTotalHarga() {
         //Calculate total
@@ -278,21 +283,12 @@ public class Cart extends AppCompatActivity implements RecyclerViewClickListener
             total += (Integer.parseInt(order.getPrice())) * (Integer.parseInt(order.getQuantity()));
         }
 
-        Locale locale = new Locale("en", "US");
+        Locale locale = new Locale("in", "ID");
         NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
 
         txtTotalPrice.setText(numberFormat.format(total));
         //txtTotalPrice.setText("$ "  + String.valueOf(total) );
 
-    }
-
-    //TODO :
-    public void refreshList() {
-        cart = openHelper.getAllOrderFilter(Common.currentUser.getPhone());
-        cartAdapter = new CartAdapter(cart, this, this);
-        recyclerView.setAdapter(cartAdapter);
-
-        hitungTotalHarga();
     }
 
 }

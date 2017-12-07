@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -58,6 +59,7 @@ public class Home extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Set aplikasi ke dalam keadaan fullscreen
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_home);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -75,9 +77,12 @@ public class Home extends AppCompatActivity
         menuCart = menu.findItem(R.id.nav_cart);
         menuOrder = menu.findItem(R.id.nav_orders);
 
-        //Set counter Defaulth
-        setMenuCounter(menuCart.getItemId() , openHelper.getOrderCountFilter(Common.currentUser.getPhone()));
-        setMenuCounter(menuOrder.getItemId() , 0);
+
+        if (openHelper.isTableExists("OrderDetail", true)) {
+            //Set counter Defaulth
+            setMenuCounter(menuCart.getItemId(), openHelper.getOrderCountFilter(Common.currentUser.getPhone()));
+            setMenuCounter(menuOrder.getItemId(), 0);
+        }
 
         //Floating Action Bar
         //Library link https://github.com/andremion/CounterFab

@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -36,7 +37,7 @@ public class OrderStatus extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //Set aplikasi ke dalam keadaan fullscreen
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_order_status);
 
         //Init Firebase
@@ -71,14 +72,15 @@ public class OrderStatus extends AppCompatActivity {
                 viewHolder.txtOrderId.setText(adapter.getRef(position).getKey());
 
                 //Set status berdasarkan id
+                //Taken from https://stackoverflow.com/questions/30464234/android-lollipop-set-status-bar-text-color
                 if (status.equals("0")){
-                    viewHolder.txtOrderStatus.setTextColor(getColor(R.color.colorMenunggu));
+                    viewHolder.txtOrderStatus.setTextColor(getResources().getColor(R.color.colorMenunggu));
                 } else if (status.equals("1")){
-                    viewHolder.txtOrderStatus.setTextColor(getColor(R.color.colorDiProses));
+                    viewHolder.txtOrderStatus.setTextColor(getResources().getColor(R.color.colorDiProses));
                 } else if (status.equals("2")){
-                    viewHolder.txtOrderStatus.setTextColor(getColor(R.color.colorPengiriman));
+                    viewHolder.txtOrderStatus.setTextColor(getResources().getColor(R.color.colorPengiriman));
                 } else {
-                    viewHolder.txtOrderStatus.setTextColor(getColor(R.color.colorDiTerima));
+                    viewHolder.txtOrderStatus.setTextColor(getResources().getColor(R.color.colorDiTerima));
                 }
 
                 viewHolder.txtOrderStatus.setText(convertCodeStatus(model.getStatus()));

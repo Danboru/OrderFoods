@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,6 +41,8 @@ public class FoodDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Set aplikasi ke dalam keadaan fullscreen
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_food_detail);
 
         //Firebase
@@ -61,7 +64,7 @@ public class FoodDetail extends AppCompatActivity {
 
                 //TODO : Periksa item sudah di keranjang ?
                 if (openHelper.hasObject(currentFood.getName()) == true) {
-                    Toast.makeText(FoodDetail.this, "Sudah di keranjang", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FoodDetail.this, "Sudah di Keranjang", Toast.LENGTH_SHORT).show();
                 } else {
 
                     openHelper.addOrder(new Order(foodId,
@@ -72,7 +75,7 @@ public class FoodDetail extends AppCompatActivity {
                             Common.currentUser.getPhone()
                             ));
 
-                    Toast.makeText(FoodDetail.this, "Added to Cart", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FoodDetail.this, "Berhasil", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -104,7 +107,7 @@ public class FoodDetail extends AppCompatActivity {
                 }
 
                 //CurrentFood.getName()
-                food_price.setText("$ " + currentFood.getPrice());
+                food_price.setText("Rp " + currentFood.getPrice());
                 food_name.setText(currentFood.getName());
                 food_description.setText(currentFood.getDescrption());
             }

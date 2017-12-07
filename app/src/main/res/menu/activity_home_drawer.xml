@@ -7,9 +7,14 @@
     <group android:checkableBehavior="single">
 
         <item
+            android:id="@+id/nav_akun"
+            android:icon="@drawable/ic_account_circle_black"
+            android:title="Akun" />
+
+        <item
             android:id="@+id/nav_menu"
             android:icon="@drawable/ic_restaurant_black"
-            android:title="List Menu" />
+            android:title="Menu" />
 
         <item
             android:id="@+id/nav_cart"
@@ -21,7 +26,7 @@
         <item
             android:id="@+id/nav_orders"
             android:icon="@drawable/ic_access_time_black"
-            android:title="Pesanan Anda"
+            android:title="Riwayat Pemesanan"
             app:actionLayout="@layout/counter_layout"
             />
 

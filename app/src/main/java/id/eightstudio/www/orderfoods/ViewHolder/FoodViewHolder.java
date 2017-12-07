@@ -11,7 +11,7 @@ import id.eightstudio.www.orderfoods.R;
 public class FoodViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public ImageView food_image;
-    public TextView food_name;
+    public TextView food_name, food_price;
     OnClickListener onClickListener;
 
     public FoodViewHolder(View itemView) {
@@ -19,6 +19,7 @@ public class FoodViewHolder extends RecyclerView.ViewHolder implements View.OnCl
 
         food_image = itemView.findViewById(R.id.food_image);
         food_name = itemView.findViewById(R.id.food_name);
+        food_price = itemView.findViewById(R.id.food_price);
 
         itemView.setOnClickListener(this);
 
